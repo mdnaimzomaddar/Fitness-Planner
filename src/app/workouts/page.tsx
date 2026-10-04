@@ -1,6 +1,7 @@
 
 import FitnessCard from "../components/FitnessCard";
 import HeroSection from "../components/HeroSection";
+import { IExercise } from "../types/IExercise";
 
 const getFitness = async() => {
     const respons = await fetch('https://api.abcz.workers.dev/api/fitlog')
@@ -21,7 +22,7 @@ const WorkoutsPage = async() => {
             {/* Fitness */}
             <div className="container mx-auto p-4">
                 <div className="grid grid-cols-3 gap-6">
-                    {fitnessItems.map((fitness) => <FitnessCard key={fitness.id} fitness = {fitness}></FitnessCard>)}
+                    {fitnessItems.map((fitness : IExercise) => <FitnessCard key={fitness.id} fitness = {fitness}></FitnessCard>)}
                 </div>
             </div>
         </div>

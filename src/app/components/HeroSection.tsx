@@ -18,8 +18,8 @@ const HeroSection = () => {
           </h1>
 
           <p className="text-base md:text-lg text-[#9CA3AF] leading-relaxed">
-            FitLog is a dark, no-nonsense gym companion: pick a lift, lock it
-            into today's plan, and watch the week's work add up.
+            {`FitLog is a dark, no-nonsense gym companion: pick a lift, lock it
+            into today's plan, and watch the week's work add up.`}
           </p>
 
           <div className="pt-2">

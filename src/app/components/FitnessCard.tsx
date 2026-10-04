@@ -3,6 +3,7 @@ import { IExercise } from "../types/IExercise";
 import Image from "next/image";
 import { FaRegClock, FaRegStar } from "react-icons/fa";
 import { TbFlameFilled } from "react-icons/tb";
+import Link from "next/link";
 
 const FitnessCard = ({fitness} : {fitness : IExercise}) => {
     const {name, image, muscleGroups, equipment, difficulty, duration, caloriesBurned, sets, reps, rating,} = fitness
@@ -30,8 +31,9 @@ const FitnessCard = ({fitness} : {fitness : IExercise}) => {
       ))}
     </div>
 
-
-    <h2 className="card-title text-2xl font-black text-white tracking-wide mt-1">{name}</h2>
+      <Link href={`/workouts/${fitness.id}`}>
+            <h2 className="card-title text-2xl font-black text-white tracking-wide mt-1">{name}</h2>
+      </Link>
     <p className="text-sm text-[#9CA3AF]">{equipment}</p>
 
     <div className="border-t border-gray-800 my-4"></div>
