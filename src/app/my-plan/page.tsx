@@ -5,6 +5,7 @@ import { FitnessContext } from "../context/FitnessContext";
 import { IExercise } from "../types/IExercise";
 import FitnessListStyle from "../components/FitnessListStyle";
 import PlanSummary from "../components/PlanSummary";
+import { DiVim } from "react-icons/di";
 
 type Tab = "today" | "saved";
 type SortKey = "duration" | "calories" | "rating";
@@ -41,8 +42,14 @@ const MyPlanPage = () => {
 
   const emptyMessage =
     activeTab === "today"
-      ? "Ohh! Sorry please add today plan from 'Home'"
-      : "Ohh! Sorry please add your preference exercises from 'Home'";
+      ? (<div>
+          <h2 className="text-[18px] text-white font-semibold">NOTHING HERE YET</h2>
+          <p>Browse the library and add a lift to get today moving.</p>
+      </div>)
+      : (<div>
+          <h2 className="text-[18px] text-white font-semibold">NOTHING HERE YET</h2>
+          <p>Browse the library and save a lift to get today moving.</p>
+      </div>);
 
   const tabClass = (tab: Tab) =>
     `rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
@@ -115,8 +122,8 @@ const MyPlanPage = () => {
               {emptyMessage}
             </p>
             <Link href="/">
-              <button className="rounded-lg border-2 border-[#C2F800] bg-[#C2F800] px-6 py-3 text-sm font-bold uppercase tracking-wider text-black transition-colors duration-200 hover:bg-[#15171d] hover:text-[#C2F800]">
-                Home
+              <button className="rounded-3xl border-2 border-[#C2F800] bg-[#C2F800] px-6 py-3 text-sm font-bold uppercase tracking-wider text-black transition-colors duration-200 hover:bg-[#15171d] hover:text-[#C2F800]">
+                Go to workouts
               </button>
             </Link>
           </div>
