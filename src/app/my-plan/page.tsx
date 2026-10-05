@@ -1,88 +1,79 @@
 'use client'
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import Link from "next/link";
 import { FitnessContext } from "../context/FitnessContext";
 import { IExercise } from "../types/IExercise";
 import FitnessListStyle from "../components/FitnessListStyle";
-import Link from "next/link";
+import PlanSummary from "../components/PlanSummary";
+
+type Tab = "today" | "saved";
 
 const MyPlanPage = () => {
-    const context = useContext(FitnessContext)
-    if(!context) return (<div className="text-center py-10">Loading context...</div>)
-    
-    const {todayPlan, savePlan} = context
+
+  const [activeTab, setActiveTab] = useState<Tab>("today");
+  const context = useContext(FitnessContext);
+
+  if (!context) return <div className="text-center py-10">Loading context...</div>;
+
+  const { todayPlan, savePlan } = context;
+
+  const currentPlan: IExercise[] = activeTab === "today" ? todayPlan : savePlan;
+
+  const emptyMessage =
+    activeTab === "today"
+      ? "Ohh! Sorry please add today plan from 'Home'"
+      : "Ohh! Sorry please add your preference exercises from 'Home'";
+
+  const tabClass = (tab: Tab) =>
+    `rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+      activeTab === tab
+        ? "bg-[#1f2430] text-white"
+        : "text-gray-500 hover:text-white"
+    }`;
+
   return (
     <div className="bg-black">
-      <div className="container mx-auto py-20 flex flex-col gap-4 p-6">
-        {/* title section */}
+      <div className="container mx-auto flex flex-col gap-6 p-6 py-20">
+        {/* title */}
         <div>
           <h2 className="text-[30px] font-bold text-white">MY PLAN</h2>
-          <p className="text-base md:text-lg text-[#9CA3AF] leading-relaxed">
+          <p className="text-base leading-relaxed text-[#9CA3AF] md:text-lg">
             Cap of five lifts for today. Finish them, then load more.
           </p>
         </div>
-        
-        {/* dynamic part base on plan */}
-        <div className="bg-[#13161d] rounded-2xl border-2 border-gray-800 p-10">
 
+        {/* summary: active tab er plan onujayi change hobe */}
+        <PlanSummary plan={currentPlan} />
+
+        {/* tabs */}
+        <div className="flex w-fit gap-1 rounded-xl border border-gray-800 bg-[#13161d] p-1">
+          <button className={tabClass("today")} onClick={() => setActiveTab("today")}>
+            Today&apos;s Plan
+          </button>
+          <button className={tabClass("saved")} onClick={() => setActiveTab("saved")}>
+            Saved
+          </button>
         </div>
-        
-        {/* list tab and listed exercises */}
-        <div>
-          {/* name of each tab group should be unique */}
-          <div className="tabs tabs-lift">
-            <input
-              type="radio"
-              name="my_tabs_3"
-              className="tab bg-[#13161d] rounded-2xl text-white text-[16px] font-semibold border-2 border-gray-800 mb-10 mr-5"
-              aria-label={`Today's Plan`}
-              defaultChecked
-            />
-            <div className="tab-content rounded-2xl border-2 border-gray-800 p-10">
-                {todayPlan.length > 0 ? (
-                    <div className="flex flex-col gap-4">
-                        {todayPlan.map((items : IExercise) => <FitnessListStyle key={items.id} items = {items}></FitnessListStyle>)}
-                    </div>
-                ) : (
-                    <div className="flex flex-col justify-center items-center">
-                        <p className="text-[18px] font-medium text-center text-gray-500 py-10">
-                           {` Ohh! Sorry plase add today plan from 'Home'`}
-                        </p>
-                        <Link href="/">
-                                <button className="bg-[#C2F800] text-black px-6 py-3 rounded-lg text-sm font-bold uppercase tracking-wider hover:bg-[#15171d] hover:text-[#C2F800] border-2 border-[#C2F800] transition-colors duration-200">
-                                    Home
-                                </button>
-                        </Link>
-                    </div>
-                )}
-            </div>
 
-            <input
-              type="radio"
-              name="my_tabs_3"
-              className="tab bg-[#13161d] rounded-2xl text-white text-[16px] font-semibold border-2 border-gray-800 mb-10 mr-5"
-              aria-label={`Saved`}
-              
-            />
-            <div className="tab-content rounded-2xl border-2 border-gray-800 p-10">
-              {savePlan.length > 0 ? (
-                <div className="flex flex-col gap-4">
-                {savePlan.map((items) => <FitnessListStyle key={items.id} items={items}></FitnessListStyle>)}
-                </div>
-              ) : (
-                <div className="flex flex-col justify-center items-center">
-                    <p className="text-[18px] font-medium text-center text-gray-500 py-10">
-                           {` Ohh! Sorry plase add your preference exercises from 'Home'`}
-                    </p>
-                    <Link href="/">
-                        <button className="bg-[#C2F800] text-black px-6 py-3 rounded-lg text-sm font-bold uppercase tracking-wider hover:bg-[#15171d] hover:text-[#C2F800] border-2 border-[#C2F800] transition-colors duration-200">
-                            Home
-                        </button>
-                    </Link>
-                </div>
-              )}
-            </div>
+        {/* list */}
+        {currentPlan.length > 0 ? (
+          <div className="flex flex-col gap-4">
+            {currentPlan.map((items: IExercise) => (
+              <FitnessListStyle key={items.id} items={items} />
+            ))}
           </div>
-        </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center">
+            <p className="py-10 text-center text-[18px] font-medium text-gray-500">
+              {emptyMessage}
+            </p>
+            <Link href="/">
+              <button className="rounded-lg border-2 border-[#C2F800] bg-[#C2F800] px-6 py-3 text-sm font-bold uppercase tracking-wider text-black transition-colors duration-200 hover:bg-[#15171d] hover:text-[#C2F800]">
+                Home
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
