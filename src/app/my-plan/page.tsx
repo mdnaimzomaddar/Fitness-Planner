@@ -7,10 +7,17 @@ import FitnessListStyle from "../components/FitnessListStyle";
 import PlanSummary from "../components/PlanSummary";
 
 type Tab = "today" | "saved";
+type SortKey = "duration" | "calories" | "rating";
+
+const SORT_OPTIONS: { value: SortKey; label: string }[] = [
+  { value: "duration", label: "Duration" },
+  { value: "calories", label: "Calories" },
+  { value: "rating", label: "Rating" },
+];
 
 const MyPlanPage = () => {
-
   const [activeTab, setActiveTab] = useState<Tab>("today");
+  const [sortBy, setSortBy] = useState<SortKey>("duration");
   const context = useContext(FitnessContext);
 
   if (!context) return <div className="text-center py-10">Loading context...</div>;
@@ -18,6 +25,19 @@ const MyPlanPage = () => {
   const { todayPlan, savePlan, removeFromPlan, markDone } = context;
 
   const currentPlan: IExercise[] = activeTab === "today" ? todayPlan : savePlan;
+
+  const sortedPlan = [...currentPlan].sort((a, b) => {
+    switch (sortBy) {
+      case "duration":
+        return Number(a.duration) - Number(b.duration);
+      case "calories":
+        return Number(b.caloriesBurned) - Number(a.caloriesBurned);
+      case "rating":
+        return Number(b.rating) - Number(a.rating);
+      default:
+        return 0;
+    }
+  });
 
   const emptyMessage =
     activeTab === "today"
@@ -42,23 +62,45 @@ const MyPlanPage = () => {
           </p>
         </div>
 
-        {/* summary: active tab er plan onujayi change hobe */}
+        {/* summary */}
         <PlanSummary plan={currentPlan} />
 
-        {/* tabs */}
-        <div className="flex w-fit gap-1 rounded-xl border border-gray-800 bg-[#13161d] p-1">
-          <button className={tabClass("today")} onClick={() => setActiveTab("today")}>
-            Today&apos;s Plan
-          </button>
-          <button className={tabClass("saved")} onClick={() => setActiveTab("saved")}>
-            Saved
-          </button>
+        {/* tabs + sort */}
+        <div className="flex items-center justify-between">
+          {/* tab */}
+          <div className="flex w-fit gap-1 rounded-xl border border-gray-800 bg-[#13161d] p-1">
+            <button className={tabClass("today")} onClick={() => setActiveTab("today")}>
+              {`Today's Plan`}
+            </button>
+            <button className={tabClass("saved")} onClick={() => setActiveTab("saved")}>
+              Saved
+            </button>
+          </div>
+
+          {/* sort */}
+          <div className="flex items-center gap-3">
+            <label htmlFor="sort" className="text-xs text-gray-500">
+              Sort By
+            </label>
+            <select
+              id="sort"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortKey)}
+              className="rounded-xl border border-gray-800 bg-[#13161d] px-4 py-2 text-xs font-medium text-white outline-none transition-colors hover:border-[#C2F800] focus:border-[#C2F800]"
+            >
+              {SORT_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* list */}
-        {currentPlan.length > 0 ? (
+        {sortedPlan.length > 0 ? (
           <div className="flex flex-col gap-4">
-            {currentPlan.map((items: IExercise) => (
+            {sortedPlan.map((items: IExercise) => (
               <FitnessListStyle
                 key={items.id}
                 items={items}
