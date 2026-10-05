@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+FitLog 🏋️
 
-## Getting Started
+FitLog is a modern workout library and daily planner. Browse exercises, build today's plan, save your favourite lifts for later, and track the minutes and calories of your session, all in a clean dark UI with a lime accent.
 
-First, run the development server:
+Description
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+FitLog helps you decide what to train and keep track of it. Exercises from the workout library can be added to Today's Plan or to a Saved list. The My Plan page shows a live summary (exercises, minutes, calories) for whichever list you are viewing, lets you sort exercises, mark them as done, and remove the ones you no longer want.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The UI is built from a Figma design and shares plan state across the whole app using React Context, so the navbar counters, summary cards, and lists always stay in sync.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Technologies Used
+Category	        Tech
+Framework	        Next.js 16 (App Router)
+Library	            React
+Language	        TypeScript
+Styling	            Tailwind CSS + daisyUI
+Icons	            React Icons
+State management	React Context API (useContext, useState)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Features
+1. Workout library: browse exercises with equipment, duration, calories burned, and rating.
 
-## Learn More
+2. Today's Plan & Saved lists: add exercises to today's plan or save them for later.
 
-To learn more about Next.js, take a look at the following resources:
+3. Tabbed My Plan page: switch between Today's Plan and Saved with a segmented tab control.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Live plan summary: total exercises, minutes, and calories update instantly for the active tab.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. Sort exercises: sort the list by duration, calories, or rating from the Sort By dropdown.
 
-## Deploy on Vercel
+6. Mark as Done: finish an exercise from today's plan and remove it from the active list.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Author
+M Naim Zomaddar 
+https://naimzomaddar.netlify.app/

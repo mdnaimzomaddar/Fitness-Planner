@@ -6,6 +6,7 @@ import { IExercise } from "../types/IExercise";
 import FitnessListStyle from "../components/FitnessListStyle";
 import PlanSummary from "../components/PlanSummary";
 import { DiVim } from "react-icons/di";
+import { toast } from "react-toastify";
 
 type Tab = "today" | "saved";
 type SortKey = "duration" | "calories" | "rating";
@@ -39,6 +40,22 @@ const MyPlanPage = () => {
         return 0;
     }
   });
+
+  const handleMarkDone = (id: IExercise["id"]) => {
+  const item = todayPlan.find((i) => i.id === id);
+  markDone(id);
+  toast.success(`${item?.name ?? "Exercise"} marked as done`);
+};
+
+const handleRemove = (id: IExercise["id"]) => {
+  const item = currentPlan.find((i) => i.id === id);
+  removeFromPlan(id, activeTab);
+  toast(
+    `${item?.name ?? "Exercise"} removed from ${
+      activeTab === "today" ? "today's plan" : "saved"
+    }`,
+  );
+};
 
   const emptyMessage =
     activeTab === "today"
@@ -111,8 +128,8 @@ const MyPlanPage = () => {
               <FitnessListStyle
                 key={items.id}
                 items={items}
-                onMarkDone={activeTab === "today" ? markDone : undefined}
-                onRemove={(id) => removeFromPlan(id, activeTab)}
+                onMarkDone={activeTab === "today" ? handleMarkDone : undefined}
+                onRemove={handleRemove}
               />
             ))}
           </div>
