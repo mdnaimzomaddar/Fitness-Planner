@@ -1,7 +1,13 @@
+'use client'
 import Image from "next/image";
 import Link from "next/link";
 import logoIcon from "../../assets/logo.png"
+import { useContext } from "react";
+import { FitnessContext } from "../context/FitnessContext";
 const Navbar = () => {
+  const context = useContext(FitnessContext)
+  const todayPlan = context?.todayPlan ?? []
+  const savePlan = context?.savePlan ?? []
 
     const MenuLinks = <>
         <li><Link href="/" className="text-[12px] text-white font-semibold hover:bg-[#1A2312] hover:rounded-3xl hover:text-[#C2F800]">Workouts</Link></li>
@@ -53,12 +59,19 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end flex gap-1">
-        <Link href="/my-plan" className="text-[14px] text-white font-semibold pl-5 pr-5 pt-3 pb-3 hover:bg-[#1A2312] hover:rounded-3xl hover:text-[#C2F800]">
+        <div className="flex justify-center items-center">
+          <Link href="/my-plan" className="text-[14px] text-white font-semibold pl-5 pr-5 pt-3 pb-3">
             <h1>Plan</h1>
         </Link >
-        <Link href="/my-plan" className="text-[14px] text-white font-semibold pl-5 pr-5 pt-3 pb-3 hover:bg-[#1A2312] hover:rounded-3xl hover:text-[#C2F800]">
+        <h2 className="bg-[#c2f800] text-black pl-2 pr-2 rounded-full">{todayPlan.length}</h2>
+        </div>
+
+        <div className="flex justify-center items-center">
+          <Link href="/my-plan" className="text-[14px] text-white font-semibold pl-5 pr-5 pt-3 pb-3">
             <h1>Saved</h1>
-        </Link>
+        </Link >
+        <h2 className="text-white border-2 border-gray-800 pl-2 pr-2 rounded-full">{savePlan.length}</h2>
+        </div>
       </div>
     </div>
   );
