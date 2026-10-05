@@ -4,21 +4,12 @@ import { FaRegClock, FaRegStar } from 'react-icons/fa';
 import { TbFlameFilled } from 'react-icons/tb';
 import { IoClose } from 'react-icons/io5';
 import { FiCheck } from 'react-icons/fi';
-
-type WorkoutItem = {
-  id: string | number;
-  name: string;
-  equipment: string;
-  image: string;
-  duration: number | string;
-  caloriesBurned: number | string;
-  rating: number | string;
-};
+import { IExercise } from '../types/IExercise';
 
 type Props = {
-  items: WorkoutItem;
-  onMarkDone?: (id: WorkoutItem['id']) => void;
-  onRemove?: (id: WorkoutItem['id']) => void;
+  items: IExercise;
+  onMarkDone?: (id: IExercise['id']) => void;
+  onRemove?: (id: IExercise['id']) => void;
 };
 
 export default function FitnessListStyle({ items, onMarkDone, onRemove }: Props) {
@@ -67,21 +58,25 @@ export default function FitnessListStyle({ items, onMarkDone, onRemove }: Props)
           </button>
         </Link>
 
-        <button
-          onClick={() => onMarkDone?.(id)}
-          className="flex items-center gap-1.5 rounded-full bg-[#C2F800] px-5 py-2 text-xs font-semibold text-black transition-colors duration-200 hover:bg-[#d6ff3a]"
-        >
-          <FiCheck className="text-sm" />
-          Mark as Done
-        </button>
+        {onMarkDone && (
+          <button
+            onClick={() => onMarkDone(id)}
+            className="flex items-center gap-1.5 rounded-full bg-[#C2F800] px-5 py-2 text-xs font-semibold text-black transition-colors duration-200 hover:bg-[#d6ff3a]"
+          >
+            <FiCheck className="text-sm" />
+            Mark as Done
+          </button>
+        )}
 
-        <button
-          onClick={() => onRemove?.(id)}
-          aria-label="Remove workout"
-          className="text-gray-500 transition-colors hover:text-white"
-        >
-          <IoClose size={16} />
-        </button>
+        {onRemove && (
+          <button
+            onClick={() => onRemove(id)}
+            aria-label="Remove workout"
+            className="text-gray-500 transition-colors hover:text-white"
+          >
+            <IoClose size={16} />
+          </button>
+        )}
       </div>
     </div>
   );

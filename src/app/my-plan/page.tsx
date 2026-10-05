@@ -15,7 +15,7 @@ const MyPlanPage = () => {
 
   if (!context) return <div className="text-center py-10">Loading context...</div>;
 
-  const { todayPlan, savePlan } = context;
+  const { todayPlan, savePlan, removeFromPlan, markDone } = context;
 
   const currentPlan: IExercise[] = activeTab === "today" ? todayPlan : savePlan;
 
@@ -59,7 +59,12 @@ const MyPlanPage = () => {
         {currentPlan.length > 0 ? (
           <div className="flex flex-col gap-4">
             {currentPlan.map((items: IExercise) => (
-              <FitnessListStyle key={items.id} items={items} />
+              <FitnessListStyle
+                key={items.id}
+                items={items}
+                onMarkDone={activeTab === "today" ? markDone : undefined}
+                onRemove={(id) => removeFromPlan(id, activeTab)}
+              />
             ))}
           </div>
         ) : (
