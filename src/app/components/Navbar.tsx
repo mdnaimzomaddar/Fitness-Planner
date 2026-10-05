@@ -1,18 +1,43 @@
 'use client'
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import logoIcon from "../../assets/logo.png"
 import { useContext } from "react";
 import { FitnessContext } from "../context/FitnessContext";
+
 const Navbar = () => {
   const context = useContext(FitnessContext)
   const todayPlan = context?.todayPlan ?? []
   const savePlan = context?.savePlan ?? []
+  const pathname = usePathname()
 
-    const MenuLinks = <>
-        <li><Link href="/" className="text-[12px] text-white font-semibold hover:bg-[#1A2312] hover:rounded-3xl hover:text-[#C2F800]">Workouts</Link></li>
-        <li><Link href="/my-plan" className="text-[12px] text-white font-semibold hover:bg-[#1A2312] hover:rounded-3xl hover:text-[#C2F800]">My Plan</Link></li>
+  const navLinks = [
+    { href: "/", label: "Workouts" },
+    { href: "/my-plan", label: "My Plan" },
+  ]
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href)
+
+  const MenuLinks = (
+    <>
+      {navLinks.map(({ href, label }) => (
+        <li key={href}>
+          <Link
+            href={href}
+            className={`text-[12px] font-semibold hover:bg-[#1A2312] hover:rounded-3xl hover:text-[#C2F800] ${
+              isActive(href)
+                ? "bg-[#1A2312] rounded-3xl text-[#C2F800]"
+                : "text-white"
+            }`}
+          >
+            {label}
+          </Link>
+        </li>
+      ))}
     </>
+  )
 
   return (
     <div className="navbar shadow-sm bg-black fixed top-0 left-0 w-full z-50">
@@ -43,34 +68,29 @@ const Navbar = () => {
             {MenuLinks}
           </ul>
         </div>
-        <a className="btn bg-black border-none shadow-none text-xl">
-            <Image
-                src={logoIcon}
-                width={30}
-                height={30}
-                alt="Logo"
-            />
-            <span className="text-[18px] font-black text-[#ffffff]">FITLOG</span>
-        </a>
+        <Link href="/" className="btn bg-black border-none shadow-none text-xl">
+          <Image src={logoIcon} width={30} height={30} alt="Logo" />
+          <span className="text-[18px] font-black text-[#ffffff]">FITLOG</span>
+        </Link>
       </div>
+
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          {MenuLinks}
-        </ul>
+        <ul className="menu menu-horizontal px-1">{MenuLinks}</ul>
       </div>
+
       <div className="navbar-end flex gap-1">
         <div className="flex justify-center items-center">
           <Link href="/my-plan" className="text-[14px] text-white font-semibold pl-5 pr-5 pt-3 pb-3">
             <h1>Plan</h1>
-        </Link >
-        <h2 className="bg-[#c2f800] text-black pl-2 pr-2 rounded-full">{todayPlan.length}</h2>
+          </Link>
+          <h2 className="bg-[#c2f800] text-black pl-2 pr-2 rounded-full">{todayPlan.length}</h2>
         </div>
 
         <div className="flex justify-center items-center">
           <Link href="/my-plan" className="text-[14px] text-white font-semibold pl-5 pr-5 pt-3 pb-3">
             <h1>Saved</h1>
-        </Link >
-        <h2 className="text-white border-2 border-gray-800 pl-2 pr-2 rounded-full">{savePlan.length}</h2>
+          </Link>
+          <h2 className="text-white border-2 border-gray-800 pl-2 pr-2 rounded-full">{savePlan.length}</h2>
         </div>
       </div>
     </div>
